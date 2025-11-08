@@ -1,0 +1,44 @@
+@startuml
+class Main <<client>> {
+    +main(args: String[]): void
+}
+
+class ComputerFacade <<facade>> {
+    -cpu: Cpu
+    -memory: Memory
+    -drive: IHardDrive
+    +start(): void
+    +shutdown(): void
+    +sleep(): void
+    +wake(): void
+}
+
+interface IHardDrive <<interface>> {
+    +read(lba: long, size: int): byte[]
+}
+
+class Cpu <<subsystem>> {
+    +freeze(): void
+    +jump(position: long): void
+    +execute(): void
+}
+
+class Memory <<subsystem>> {
+    +load(position: long, data: byte[]): void
+}
+
+class Hdd <<subsystem>> {
+    +read(lba: long, size: int): byte[]
+}
+
+class Ssd <<subsystem>> {
+    +read(lba: long, size: int): byte[]
+}
+
+Main --> ComputerFacade
+ComputerFacade *-- Cpu
+ComputerFacade *-- Memory
+ComputerFacade *-- IHardDrive
+IHardDrive <|.. Hdd
+IHardDrive <|.. Ssd
+@enduml
